@@ -38,32 +38,6 @@ cur.execute("""CREATE TABLE employee(
     most_recent_hire_date   TEXT
 );""")
 
-employees = [
-    (
-        getUUID(),
-        "7872934",
-        "Brian",
-        "Hunter",
-        "Colby",
-        "2021-11-15",
-        "2022-03-15"
-    ),
-    (
-        getUUID(),
-        "5753517",
-        "Rodger",
-        "Dodger",
-        "Rabbi",
-        "2021-11-12",
-        "2022-03-15"
-    )
-]
-
-# cur.executemany("""INSERT INTO employee(
-#     dbid, employee_id, first_name, last_name, preferred_name, first_hire_date, most_recent_hire_date
-# ) VALUES (?,?,?,?,?,?,?);""", employees)
-# con.commit()
-
 cur.execute("""CREATE TABLE employee_work_status(
     employee    TEXT NOT NULL UNIQUE,
     status      TEXT NOT NULL,
