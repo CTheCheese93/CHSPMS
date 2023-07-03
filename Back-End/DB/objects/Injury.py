@@ -3,7 +3,7 @@ import uuid
 from helpers.uuid_helpers import getUUID
 
 class Injury:
-    def __init__(self, dbid=None, employee=None, injury_date=None, manager=None):
+    def __init__(self, dbid=None, employee=None, manager=None, injury_date=None):
         if dbid is None:
             self._dbid = getUUID()
         else:

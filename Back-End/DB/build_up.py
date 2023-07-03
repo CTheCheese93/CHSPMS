@@ -61,7 +61,8 @@ cur.execute("""CREATE TABLE employee_work_status(
 
 cur.execute("""CREATE TABLE job_class(
     dbid            TEXT PRIMARY KEY,
-    job_class_title TEXT UNIQUE
+    code            TEXT UNIQUE,
+    title           TEXT UNIQUE
 );""")
 
 # Create Employee Job Class Table
