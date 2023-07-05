@@ -10,6 +10,8 @@ from table_tests.injury import create_injuries, get_injuries
 from table_tests.job_class import create_job_classes, get_job_classes
 from table_tests.employee_job_class import create_employee_job_classes, get_employee_job_classes
 from table_tests.next_level_manager import create_next_level_managers, get_next_level_managers
+from table_tests.swm_type import create_swm_types, get_swm_types
+from table_tests.swm_submission import create_swm_submissions, get_swm_submissions
 
 stores = {
     "Employee": [],
@@ -39,6 +41,10 @@ def create_ready_data(connection):
     created("Job Classes")
     create_employee_job_classes(con)
     created("Employee Job Classes")
+    create_next_level_managers(con)
+    created("Next Level Managers")
+    create_swm_types(con)
+    created("SWM Types")
 
 def display_ready_data(connection):
     con = connection
@@ -81,15 +87,15 @@ def display_ready_data(connection):
 
     title_bar("Injury")
     for i in get_injuries(con):
-        print("""
-        Employee: {}
-        Manager: {}
-        Injury Date: {}
-        """.format(i.get_employee().get_first_name(), i.get_manager().get_first_name(), i.get_injury_date()))
+        print("\nEmployee: {}\nManager: {}\nInjury Date: {}\n".format(
+            i.get_employee().get_first_name(),
+            i.get_manager().get_first_name(),
+            i.get_injury_date()
+        ))
     
     title_bar("Job Class")
     for jc in get_job_classes(con):
-        print("dbid: {}\ntitle: {}\ncode: {}\n".format(
+        print("\ndbid: {}\ntitle: {}\ncode: {}\n".format(
             jc.get_dbid(), jc.get_title(), jc.get_code()
         ))
 
@@ -101,6 +107,17 @@ def display_ready_data(connection):
         ))
 
     title_bar("Next Level Manager")
+    for nlm in get_next_level_managers(con):
+        print("\nEmployee: {}\nManager: {}\n".format(
+            nlm["employee"].get_first_name(),
+            nlm["manager"].get_first_name()
+        ))
+
+    title_bar("SWM Types")
+    for swm_type in get_swm_types(con):
+        print("\nType: {}\ndbid: {}\n".format(
+            swm_type.get_type(), swm_type.get_dbid()
+        ))
 
 def main():
     con = sqlite3.connect("test_db")
@@ -108,13 +125,17 @@ def main():
 
     # create_ready_data(con)
     # display_ready_data(con)
-
-    # create_next_level_managers(con)
-    for nlm in get_next_level_managers(con):
-        print("\nEmployee: {}\nManager: {}\n".format(
-            nlm["employee"].get_first_name(),
-            nlm["manager"].get_first_name()
-        ))
+    
+    # create_swm_submissions(con)
+    for ss in get_swm_submissions(con):
+        print("\ndbid: {}\ntype: {}\nemployee: {}\ntrainer: {}\nmanager: {}\nsubmission date: {}\n".format(
+            ss.get_dbid(),
+            ss.get_type().get_type(),
+            ss.get_employee().get_first_name(),
+            ss.get_trainer().get_first_name(),
+            ss.get_manager(),
+            ss.get_submission_date()
+        ))    
 
     con.close()
 
