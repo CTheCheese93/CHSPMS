@@ -127,15 +127,18 @@ def main():
     # display_ready_data(con)
     
     # create_swm_submissions(con)
-    for ss in get_swm_submissions(con):
-        print("\ndbid: {}\ntype: {}\nemployee: {}\ntrainer: {}\nmanager: {}\nsubmission date: {}\n".format(
-            ss.get_dbid(),
-            ss.get_type().get_type(),
-            ss.get_employee().get_first_name(),
-            ss.get_trainer().get_first_name(),
-            ss.get_manager(),
-            ss.get_submission_date()
-        ))    
+    # for ss in get_swm_submissions(con):
+    #     print("\ndbid: {}\ntype: {}\nemployee: {}\ntrainer: {}\nmanager: {}\nsubmission date: {}\n".format(
+    #         ss.get_dbid(),
+    #         ss.get_type().get_type(),
+    #         ss.get_employee().get_first_name(),
+    #         ss.get_trainer().get_first_name(),
+    #         ss.get_manager(),
+    #         ss.get_submission_date()
+    #     ))    
+
+    cmd = cur.execute("SELECT dbid, first_name FROM employee;")
+    print(cmd.fetchall())
 
     con.close()
 
