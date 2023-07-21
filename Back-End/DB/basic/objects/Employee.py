@@ -1,5 +1,3 @@
-import uuid
-
 from helpers.uuid_helpers import getUUID
 
 class Employee:
