@@ -17,12 +17,21 @@ class SecondaryDepartment(Base):
 
     id: Mapped[str] = mapped_column(primary_key=True, default=getUUID)
     name: Mapped[str]
-    primary_department: Mapped[str] = mapped_column(ForeignKey("primary_department.id"))
+    primary_department_id: Mapped[str] = mapped_column(ForeignKey("primary_department.id"))
+
+    employees: Mapped[List["Employee"]] = relationship(
+        back_populates="secondary_department",
+        primaryjoin="SecondaryDepartment.id==Employee.secondary_department_id"
+    )
+
+    primary_department: Mapped["PrimaryDepartment"] = relationship(
+        back_populates="secondary_departments",
+        primaryjoin="SecondaryDepartment.primary_department_id == PrimaryDepartment.id"
+    )
 
 
     def __repr__(self) -> str:
         return generate_repr("SecondaryDepartment", {
             "id": self.id,
-            "name": self.name,
-            "primary_department_dbid": self.primary_department
+            "name": self.name
         })
