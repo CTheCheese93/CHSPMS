@@ -7,7 +7,7 @@ from typing import List
 
 from helpers.uuid_helpers import getUUID
 from helpers.generate_repr import generate_repr
-from objects.Base import Base
+from .Base import Base
 
 class PrimaryDepartment(Base):
     __tablename__ = "primary_department"

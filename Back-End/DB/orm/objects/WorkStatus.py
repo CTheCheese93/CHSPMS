@@ -8,7 +8,7 @@ from typing import List
 
 from helpers.uuid_helpers import getUUID
 from helpers.generate_repr import generate_repr
-from objects.Base import Base
+from .Base import Base
 
 class WorkStatus(Base):
     __tablename__ = "work_status"

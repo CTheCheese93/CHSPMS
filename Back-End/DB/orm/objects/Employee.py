@@ -10,15 +10,15 @@ from typing import Optional, List
 
 from helpers.uuid_helpers import getUUID
 from helpers.generate_repr import generate_repr
-from objects.Base import Base
+from .Base import Base
 
 class Employee(MappedAsDataclass, Base):
     __tablename__ = "employee"
 
     id: Mapped[str] = mapped_column(primary_key=True, default_factory=getUUID, init=False)
     employee_id: Mapped[Optional[int]] = mapped_column(unique=True, init=False)
-    first_name: Mapped[int]
-    last_name: Mapped[int]
+    first_name: Mapped[str]
+    last_name: Mapped[str]
     first_hire_date: Mapped[Optional[datetime]] = mapped_column(init=False)
     most_recent_hire_date: Mapped[Optional[datetime]] = mapped_column(init=False)
     

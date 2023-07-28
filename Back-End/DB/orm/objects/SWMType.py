@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from helpers.uuid_helpers import getUUID
 from helpers.generate_repr import generate_repr
-from objects.Base import Base
+from .Base import Base
 
 class SWMType(Base):
     __tablename__ = "swm_type"
