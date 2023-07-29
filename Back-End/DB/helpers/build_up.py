@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from DB.orm.objects.Employee import Employee
 from DB.orm.objects.Injury import Injury
 from DB.orm.objects.JobClass import JobClass
@@ -51,7 +53,7 @@ def build_up():
     session.expire(brandon, ['employees', 'job_class', 'work_status'])
     session.expire(ronald, ['work_status'])
 
-    injury = Injury(employee_dbid=colby.id, manager_dbid=colby.manager_id)
+    injury = Injury(employee_dbid=colby.id, manager_dbid=colby.manager_id, injury_date=datetime(2021,10,3))
 
     session.add_all([injury, pd1, pd2, unload, metros])
 

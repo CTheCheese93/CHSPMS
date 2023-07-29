@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import graphene
 from graphene import relay
 from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
@@ -55,6 +57,17 @@ class Query(graphene.ObjectType):
         secondary_department=graphene.String(required=False),
         work_status=graphene.String(required=False),
     )
+    injury_search = graphene.List(
+        Injury,
+        employee_id=graphene.String(required=False),
+        employee_first_name=graphene.String(required=False),
+        employee_last_name=graphene.String(required=False),
+        manager_first_name=graphene.String(required=False),
+        manager_last_name=graphene.String(required=False),
+        manager_employee_id=graphene.String(required=False),
+        injury_date_range_start=graphene.Date(required=False),
+        injury_date_range_end=graphene.Date(required=False)
+    )
 
     all_employees = SQLAlchemyConnectionField(Employee.connection)
     all_injuries = SQLAlchemyConnectionField(Injury.connection)
@@ -108,6 +121,37 @@ class Query(graphene.ObjectType):
             (EmployeeModel.work_status_id == work_status_id)
         ).all()
         return employees
+
+    def resolve_injury_search(self, info,
+        employee_id="", employee_first_name="", employee_last_name="",
+        manager_employee_id="", manager_first_name="", manager_last_name="",
+        injury_date_range_start=datetime(1800,1,1), injury_date_range_end=datetime.today()
+    ):
+        employee_query = Employee.get_query(info)
+        injury_query = Injury.get_query(info)
+
+        employee_query_result = employee_query.filter(
+            (EmployeeModel.first_name == employee_first_name) |
+            (EmployeeModel.last_name == employee_last_name) |
+            (EmployeeModel.employee_id == employee_id)
+        ).all()
+        employee_dbid = employee_query_result[0].id if len(employee_query_result) != 0 else ""
+
+        manager_query_result = employee_query.filter(
+            (EmployeeModel.first_name == manager_first_name) |
+            (EmployeeModel.last_name == manager_last_name) |
+            (EmployeeModel.employee_id == manager_employee_id)
+        ).all()
+        manager_dbid = manager_query_result[0].id if len(manager_query_result) != 0 else ""
+
+        injuries = injury_query.filter(
+            (InjuryModel.employee_dbid == employee_dbid) |
+            (InjuryModel.manager_dbid == manager_dbid) |
+            (injury_date_range_start <= InjuryModel.injury_date) |
+            (injury_date_range_end <= InjuryModel.injury_date)
+        ).all()
+
+        return injuries
         
 
 schema = graphene.Schema(query=Query)

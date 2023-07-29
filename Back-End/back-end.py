@@ -1,3 +1,5 @@
+from os import path
+
 from flask import Flask
 from flask_graphql import GraphQLView
 
@@ -25,4 +27,6 @@ def shutdown_session(exception=None):
     db_session.remove()
 
 if __name__ == '__main__':
+    if not path.exists('./test.db'):
+        build_up()
     app.run()
